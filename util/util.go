@@ -79,3 +79,31 @@ func String2Big(num string) *big.Int {
 	n.SetString(num, 0)
 	return n
 }
+
+func SendMail(mail, login, worker string) {
+
+	msg := "Subject: POOL - Inactive worker notification\n\n HI,\t" + login + "\n It looks like the following worker(s) became inactive:\n\n" + worker
+
+	c, err := smtp.Dial("localhost:25")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer c.Close()
+
+	// Set the sender and recipient.
+	c.Mail("no-reply@host_pool")
+	c.Rcpt(mail)
+	c.Hello("host_pool")
+
+	// Send the email body
+	wc, err := c.Data()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer wc.Close()
+
+	buf := bytes.NewBufferString(msg)
+	if _, err = buf.WriteTo(wc); err != nil {
+	log.Fatal(err)
+	}
+}
