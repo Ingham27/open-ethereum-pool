@@ -8,6 +8,7 @@ import (
 
 	"net/smtp"
 	"log"
+	"bytes"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/math"
